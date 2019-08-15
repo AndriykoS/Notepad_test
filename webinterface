@@ -6,7 +6,7 @@
 =cut
 use strict;
 use warnings FATAL => 'all';
-use JSON::MaybeXS qw(encode_json decode_json);
+use JSON;
 
 our ($db, $admin, %conf, $html, %FORM, $index, %lang, @WEEKDAYS, @state_colors, @MONTHES, $SELF_URL);
 
@@ -829,7 +829,7 @@ sub notepad_show_sticker {
     foreach my $line (@$list) {
       $line->{top}="60px";
       $line->{left}="1030px";
-      $sticker_json = encode_json $list;
+      $sticker_json = JSON->new->encode($list);
     }
     print $sticker_json;
     return 1;
@@ -903,7 +903,7 @@ sub notepad_test_sp {
 
   my $reports = $table->show();
 
-  $html->tpl_show(templates('notepad_sticker_sp'),{
+  $html->tpl_show(_include('notepad_sticker','Notepad_test'),{
     ID            => $FORM{ID},
     INDEX         => $index
   });
